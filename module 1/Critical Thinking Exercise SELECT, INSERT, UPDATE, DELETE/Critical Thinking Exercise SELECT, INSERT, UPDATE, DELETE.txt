@@ -1,0 +1,17 @@
+/*This exercise will demonstrate how to query data, insert data, update data.
+Also how to Delete data without deleting the entire table, and how to query data under specific parameters.
+
+This is a customers table that we are editing here that holds the customer info ((name, address, city, state, zip) to keep track of who the company does business with. Each customer is given an ID # in order to easily identify each customer incase their are customers with the same name. */
+
+SELECT * FROM customer;
+
+INSERT INTO customer (name, address, city, state, zip)
+    VALUES ('John Doe', '199 Virginia Street', 'LA', 'CA', '95833');
+    
+UPDATE customer SET city = 'LAS Angeles' WHERE id = 4;
+
+DELETE FROM customer WHERE id = 4;
+
+SELECT * FROM customer WHERE state = 'CA';
+
+
