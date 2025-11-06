@@ -1,0 +1,56 @@
+DROP TABLE IF EXISTS Sales;
+DROP TABL IF EXISTS Products;
+
+CREATE TABLE Products (
+   ProductID INT PRIMARY KEY,
+   ProductName VARCHAR(100),
+   Price DECIMAL(10, 2),
+   StockQuantity INT
+);
+
+INSERT INTO Products (ProductID, ProductName, Price, StockQuantity) VALUES
+(1, 'Laptop', 1200.00, 50),
+(2, 'Headphones', 150.00, 200),
+(3, 'Mouse', 25.00, 100),
+(4, 'Keyboard', 45.00, 75);
+
+
+CREATE TABLE Sales (
+   SaleID INT AUTO_INCREMENT PRIMARY KEY,
+   ProductID INT,
+   SaleDate DATE,
+   QuantitySold INT,
+   FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+
+
+
+CREATE TRIGGER UpdateStockAfterSale
+AFTER INSERT ON Sales
+FOR EACH ROW
+BEGIN
+   UPDATE Products
+   SET StockQuantity = StockQuantity - NEW.QuantitySold
+   WHERE ProductID = NEW.ProductID;
+END;
+
+CREATE TRIGGER PreventNegativeStock
+BEFORE INSERT ON Sales
+FOR EACH ROW
+BEGIN
+   SELECT CASE
+      WHEN (SELECT StockQuantity FROM Products WHERE ProductID = NEW.ProductID) < NEW.QuantitySold THEN
+         RAISE(ABORT, 'Insufficient stock for the sale.')
+   END;
+END;
+
+INSERT INTO Sales (ProductID, SaleDate, QuantitySold) VALUES
+(1, '2025-04-08', 10);
+
+SELECT * FROM Products;
+SELECT * FROM Sales;
+
+DROP TRIGGER IF EXISTS UpdateStockAfterSale;
+
+DROP TRIGGER IF EXISTS PreventNegativeStock;
