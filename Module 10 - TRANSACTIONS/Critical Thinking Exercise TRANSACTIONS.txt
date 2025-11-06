@@ -1,0 +1,94 @@
+DROP TABLE IF EXISTS Transactions;
+DROP TABLE IF EXISTS Accounts;
+
+
+CREATE TABLE Accounts (
+    AccountID INT PRIMARY KEY,
+    AccountHolder VARCHAR(100),
+    Balance DECIMAL(10,2)
+);
+
+
+CREATE TABLE Transactions (
+    TransactionID INT PRIMARY KEY,
+    AccountID INT,
+    TransactionType VARCHAR(50),
+    Amount DECIMAL(10,2),
+    FOREIGN KEY (AccountID) REFERENCES Accounts(AccountID)
+);
+
+
+
+
+-- Begin transaction for money transfer
+BEGIN TRANSACTION;
+
+SAVEPOINT AccountCreation;
+
+INSERT INTO Accounts (AccountID, AccountHolder, Balance)
+VALUES (1, 'John Doe', 1000.00),
+       (2, 'mike Doe', 200.00);
+
+ROLLBACK TO AccountCreation;
+
+SAVEPOINT NewTransaction;
+
+-- Deduct money from the sender's account
+UPDATE Accounts
+SET Balance = Balance - 500.00
+WHERE AccountID = 1;
+
+-- Add the same amount to the recipient's account
+UPDATE Accounts
+SET Balance = Balance + 500.00
+WHERE AccountID = 2;
+
+
+-- Record the transaction in the Transactions table
+INSERT INTO Transactions (TransactionID, AccountID, TransactionType, Amount)
+VALUES (101, 1, 'Debit', 500.00);
+
+INSERT INTO Transactions (TransactionID, AccountID, TransactionType, Amount)
+VALUES (102, 2, 'Credit', 500.00);
+
+
+ROLLBACK TO NewTransaction;
+
+-- Commit the transaction if all steps succeed
+COMMIT;
+
+-- Start transaction
+BEGIN TRANSACTION;
+
+-- Create a savepoint before deducting money
+SAVEPOINT NewTransaction;
+
+-- Deduct money from the sender's account
+UPDATE Accounts
+SET Balance = Balance - 500.00
+WHERE AccountID = 1;
+
+-- Roll back to the savepoint if an error occurs (handled programmatically outside SQL)
+ROLLBACK TO NewTransaction;
+
+-- Add money to the recipient's account
+UPDATE Accounts
+SET Balance = Balance + 500.00
+WHERE AccountID = 2;
+
+-- Record the transaction in the Transactions table
+INSERT INTO Transactions (TransactionID, AccountID, TransactionType, Amount)
+VALUES (103, 1, 'Debit', 500.00);
+
+INSERT INTO Transactions (TransactionID, AccountID, TransactionType, Amount)
+VALUES (104, 2, 'Credit', 500.00);
+
+-- Commit the transaction if successful, otherwise roll back entirely
+ROLLBACK;
+COMMIT;
+
+
+
+SELECT * FROM Accounts;
+
+SELECT * FROM Transactions;
