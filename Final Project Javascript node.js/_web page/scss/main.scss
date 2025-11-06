@@ -1,0 +1,180 @@
+html {
+    background: linear-gradient(135deg, #20b2aa 0%, #008080 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    margin: 30px auto 20px auto;
+    width: fit-content;
+    color: #222;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+form {
+    background: #fff;
+    padding: 32px 28px 24px 28px;
+    border-radius: 12px;
+    max-width: 420px;
+    margin: 32px auto 24px auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    border: 1px solid #e0e0e0;
+}
+
+label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: #333;
+}
+
+select, input, button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #b2dfdb;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+    background: #f8f8f8;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+select:focus, input:focus {
+    border-color: #20b2aa;
+    outline: none;
+    box-shadow: 0 0 0 2px #b2dfdb55;
+}
+
+button {
+    background: linear-gradient(90deg, #20b2aa 60%, #008080 100%);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover, .big-btn:hover {
+    background: linear-gradient(90deg, #008080 60%, #20b2aa 100%);
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.13);
+}
+
+#editModal {
+    max-height: 80vh;
+    overflow: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    border-radius: 10px;
+}
+
+.centered-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 32px auto 24px auto;
+    background: rgba(255,255,255,0.92);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 24px 0 18px 0;
+    max-width: 500px;
+}
+
+#viewTableName {
+    width: 180px;
+    margin: 0 10px;
+    text-align: center;
+    background: #f8f8f8;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    margin: 0 auto;
+}
+
+.big-btn {
+    background: linear-gradient(90deg, #2098d1 60%, #20b2aa 100%);
+    padding: 14px 0;
+    font-size: 1.13em;
+    border-radius: 8px;
+    width: 100%;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+    margin-bottom: 0;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.big-btn:hover {
+    background: linear-gradient(90deg, #20b2aa 60%, #2098d1 100%);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.13);
+}
+
+#tableData table, #projectStatusView table {
+    border-collapse: collapse;
+    margin: 18px 0;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#tableData th, #tableData td,
+#projectStatusView th, #projectStatusView td {
+    padding: 10px 18px;
+    border: 1px solid #b2dfdb;
+    text-align: left;
+    font-size: 1em;
+}
+
+#tableData th, #projectStatusView th {
+    background: #0e5551;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+#tableData tr:nth-child(even), #projectStatusView tr:nth-child(even) {
+    background: #f0f8f8;
+}
+
+#projectStatusView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 36px auto 0 auto;
+    width: fit-content;
+    background: rgba(255,255,255,0.97);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    padding: 18px 24px;
+}
+
+#tableData{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 36px auto 0 auto;
+    width: fit-content;
+    
+    border-radius: 12px;
+
+    padding: 18px 24px;
+}

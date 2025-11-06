@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Operations</title>
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+    <h1>Database Ongoing Projects</h1>
+    <form onsubmit="handleSubmit(event)">
+        <h1>Insert Data</h1>
+        <label>
+            Table Name:
+           <select id="tableName" onchange="updateFormFields()" required>
+            <option value="" disabled selected>Select a table</option>
+            <option value="files">Files</option>
+            <option value="projects">Projects</option>
+            <option value="tasks">Tasks</option>
+            <option value="users">Users</option>
+            </select>
+        </label>
+        <br><br>
+        <div id="fieldsContainer"></div>
+        <button type="submit">Insert</button>
+    </form>
+     </form>
+
+    <!-- Centered container for view table section -->
+<div class="centered-section">
+    <h1>View Table Data</h1>
+    <label>
+        Table Name:
+        <select id="viewTableName" required style="width: 180px;">
+            <option value="" disabled selected>Select a table</option>
+            <option value="files">Files</option>
+            <option value="projects">Projects</option>
+            <option value="tasks">Tasks</option>
+            <option value="users">Users</option>
+        </select>
+    </label>
+    <div class="button-container">
+    <button class="big-btn" onclick="viewTableData()">View Data</button>
+</div>
+</div>
+<div id="tableData"></div>
+    
+
+    <br>
+    <h1>Project Status Overview</h1>
+    <div id="projectStatusView"></div>
+    <br><br><br><br><br><br>
+    <script src="./script/frontend.js" defer></script>
+</body>
+</html>
