@@ -1,0 +1,72 @@
+Drop TABLE IF EXISTS Sales;
+Drop TABLE IF EXISTS Products;
+
+Select * FROM Sales;
+SELECT * FROM Products;
+
+CREATE TABLE Products (
+    ProductID INTEGER PRIMARY KEY,
+    ProductName TEXT,
+    Category TEXT,
+    Price DECIMAL(10, 2)
+);
+
+
+CREATE TABLE Sales (
+    SaleID INTEGER PRIMARY KEY,
+    ProductID INTEGER,
+    Quantity INTEGER,
+    SaleDate DATE,
+    TotalSale DECIMAL(10, 2),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+INSERT INTO Products (ProductID, ProductName, Category, Price)
+VALUES
+    (1, 'Laptop', 'Electronics', 999.99),
+    (2, 'Smartphone', 'Electronics', 699.99),
+    (3, 'Office Chair', 'Furniture', 149.99),
+    (4, 'Notebook', 'Stationery', 2.99),
+    (5, 'Monitor', 'Electronics', 199.99),
+    (6, 'Pen', 'Stationery', 1.49),
+    (7, 'Desk', 'Furniture', 249.99),
+    (8, 'Tablet', 'Electronics', 399.99),
+    (9, 'Headphones', 'Electronics', 89.99),
+    (10, 'Backpack', 'Accessories', 49.99);
+
+INSERT INTO Sales (SaleID, ProductID, Quantity, SaleDate, TotalSale)
+VALUES
+    (1, 1, 2, '2023-01-10', 1999.98),
+    (2, 2, 1, '2023-01-15', 699.99),
+    (3, 3, 3, '2023-02-01', 449.97),
+    (4, 4, 2, '2023-02-10', 5.98),
+    (5, 5, 1, '2023-02-15', 199.99);
+
+
+SELECT SUM(s.TotalSale) AS TotalSales
+FROM Sales s
+JOIN Products p ON s.ProductID = p.ProductID;
+
+
+SELECT p.Category, AVG(p.Price) AS AveragePrice
+FROM Products p
+GROUP BY p.Category;
+
+
+
+SELECT COUNT(*) AS TotalTransactions
+FROM Sales;
+
+SELECT MAX(p.Price) AS MaxPrice
+FROM Products p;
+
+SELECT MIN(p.Price) AS MinPrice
+FROM Products p;
+
+SELECT p.Category, SUM(s.TotalSale) AS TotalSales
+FROM Sales s
+JOIN Products p ON s.ProductID = p.ProductID
+GROUP BY p.Category
+HAVING SUM(s.TotalSale) > 1000;
+
+
