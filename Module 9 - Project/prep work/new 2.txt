@@ -1,0 +1,70 @@
+-- Create the database
+CREATE DATABASE project_db;
+USE project_db;
+
+DELETE TABLE IF EXISTS Users;
+DELETE TABLE IF EXISTS Projects;
+DELETE TABLE IF EXISTS Tasks;
+DELETE TABLE IF EXISTS Tasks;
+
+-- Create the Users table
+CREATE TABLE Users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create the Projects table
+CREATE TABLE Projects (
+    project_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
+-- Create the Tasks table
+CREATE TABLE Tasks (
+    task_id INT PRIMARY KEY AUTO_INCREMENT,
+    project_id INT NOT NULL,
+    task_name VARCHAR(255) NOT NULL,
+    status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
+    due_date DATE,
+    FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE
+);
+
+-- Create the Files table
+CREATE TABLE Files (
+    file_id INT PRIMARY KEY AUTO_INCREMENT,
+    project_id INT NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE
+);
+
+-- Create a View to filter active projects
+CREATE VIEW ActiveProjects AS
+SELECT p.project_id, p.title, p.description, p.created_at
+FROM Projects p
+JOIN Tasks t ON p.project_id = t.project_id
+WHERE t.status != 'Completed';
+
+-- Create a Trigger to update project status when all tasks are completed
+DELIMITER //
+CREATE TRIGGER update_project_status
+AFTER UPDATE ON Tasks
+FOR EACH ROW
+BEGIN
+    IF (SELECT COUNT(*) FROM Tasks WHERE project_id = NEW.project_id AND status != 'Completed') = 0 THEN
+        UPDATE Projects SET description = 'All tasks completed!' WHERE project_id = NEW.project_id;
+    END IF;
+END;
+//
+DELIMITER ;
+
+
+DELETE TRIGGER IF EXISTS update_project_status;

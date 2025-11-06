@@ -1,0 +1,75 @@
+Drop Table IF EXISTS employees;
+DROP TABlE IF EXISTS projects;
+DROP TABLE IF EXISTS performance_reviews;
+Drop VIEW IF EXISTS  employee_performance_summary;
+
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    department VARCHAR(50)
+);
+
+CREATE TABLE projects (
+    project_id INT PRIMARY KEY,
+    project_name VARCHAR(100),
+    employee_id INT,
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
+
+CREATE TABLE performance_reviews (
+    review_id INT PRIMARY KEY,
+    employee_id INT,
+    review_score INT,
+    review_date DATE,
+    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
+    
+INSERT INTO employees VALUES (1, 'Alice', 'Engineering'), (2, 'Bob', 'Sales'), (3, 'Charlie', 'Engineering');
+INSERT INTO projects VALUES (101, 'Project A', 1), (102, 'Project B', 2), (103, 'Project C', 3);
+INSERT INTO performance_reviews VALUES (1, 1, 85, '2023-01-15'), (2, 2, 90, '2023-02-20'), (3, 3, 88, '2023-03-01');
+
+SELECT * FROM performance_reviews;
+SELECT * FROM projects;
+SELECT * FROM employees;
+
+
+--Using a Subselect: Query to find employees who worked on projects with an average review score above 80.
+SELECT e.name
+FROM employees e
+WHERE e.employee_id IN (
+    SELECT DISTINCT employee_id
+    FROM performance_reviews
+    WHERE review_score > 80
+);
+
+
+--Creating a View: A view to summarize employee details with their latest performance review scores.
+CREATE VIEW employee_performance_summary AS
+SELECT e.employee_id, e.name, e.department, p.review_score, p.review_date
+FROM employees e
+JOIN performance_reviews p ON e.employee_id = p.employee_id
+WHERE p.review_date = (
+    SELECT MAX(review_date)
+    FROM performance_reviews p2
+    WHERE p.employee_id = p2.employee_id
+);
+
+SELECT * FROM employee_performance_summary;
+
+
+
+--Demonstrating Use of the WITH Clause (CTE)
+--Find the top-performing employees by their average review scores using a CTE:
+WITH average_scores AS (
+    SELECT employee_id, AVG(review_score) AS avg_score
+    FROM performance_reviews
+    GROUP BY employee_id
+)
+SELECT e.name, avg.avg_score
+FROM employees e
+JOIN average_scores avg ON e.employee_id = avg.employee_id
+WHERE avg.avg_score > 85;
+
+
