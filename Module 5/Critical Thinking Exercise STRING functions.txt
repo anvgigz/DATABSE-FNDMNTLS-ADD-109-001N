@@ -1,0 +1,49 @@
+CREATE TABLE Customers (
+    CustomersID INTEGER PRIMARY KEY,
+    FirstName TEXT,
+    LastName TEXT,
+    Email TEXT
+);
+
+INSERT INTO Customers (CustomersID, FirstName, LastName, Email) VALUES
+(1, 'john   ', 'Doe', 'John.Doe@Example.com   '),
+(2, '   Jane', 'smith', 'Jane.Smith@Example.com   '),
+(3, 'alice', '   O''Connorb   ', 'Alice.O''Connor@Example.com   '),
+(4, 'Bob', 'johnson', 'Bob.Johnson@Example.com  ');
+
+
+-- Remove extra spaces and convert to uppercase
+SELECT CustomersID,
+      UPPER(LTRIM(FirstName)) AS LeftTrimmedFirstName,
+       UPPER(TRIM(LastName)) AS TrimmedLastName,
+       LOWER(RTRIM(Email)) AS RightTimmerEmail
+FROM Customers;
+
+-- Extract domain from email
+SELECT CustomersID,
+       SUBSTR(TRIM(Email), INSTR(TRIM(Email), '@') + 1) AS EmailDomain
+FROM Customers;
+
+
+
+-- Concatenate first and last names
+SELECT CustomersID,
+       TRIM(FirstName) || ' ' || TRIM(LastName) AS FullName
+FROM Customers;
+
+
+-- Find customers with email domains containing 'example'
+SELECT CustomersID,
+       Email
+FROM Customers
+WHERE Email LIKE '%example%';
+
+-- Using printf() to format full name and email
+SELECT CustomersID,
+       printf('--%s %s--', TRIM(FirstName), TRIM(LastName)) AS FullName,
+       printf('<%s>', TRIM(Email)) AS FormattedEmail
+FROM Customers;
+
+
+SELECT * FROM Customers;
+DROP TABLE IF EXISTS Customers;
