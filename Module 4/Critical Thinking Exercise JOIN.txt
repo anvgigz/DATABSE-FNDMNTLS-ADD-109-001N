@@ -1,0 +1,85 @@
+/*
+The database will consist of three tables: Students, Courses, and ClassesInProgress. The Students table contains information about students, including their unique student ID, phone number, first and last names, and the year they enrolled. The Courses table contains details about various courses, including the unique course ID, course name, and the number of credits each course is worth. The ClassesInProgress table serves as a bridge between Students and Courses, recording which students are currently enrolled in which courses. This table contains a unique ID for each enrollment, as well as foreign keys linking to the StudentID in the Students table and the CourseID in the Courses table, establishing the relationships between students and their enrolled courses.
+*\
+
+
+CREATE TABLE Students (
+    StudentID INTEGER PRIMARY KEY AUTOINCREMENT,
+    phone_number TEXT CHECK(phone_number LIKE '__________' AND phone_number NOT LIKE '%[^0-9]%') NOT NULL,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    EnrollmentYear INT
+);
+
+
+CREATE TABLE Courses (
+    CourseID INTEGER PRIMARY KEY AUTOINCREMENT,
+    CourseName VARCHAR(50),
+    Credits INTEGER
+);
+
+CREATE TABLE ClassesInProgress (
+    Classes_In_Progress_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    StudentID INTEGER,
+    CourseID INTEGER,
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID)
+);
+
+
+INSERT INTO Students (phone_number, FirstName, LastName, EnrollmentYear)
+VALUES ('1234567890', 'John', 'Doe', 2022),
+       ('2345678901', 'Jane', 'Smith', 2023),
+       ('3456789012', 'John', 'Deer', 2024),
+       ('4567890123', 'Mike', 'Lozowski', 2025),
+       ('5678901234', 'John', 'Wick', 2000);
+
+
+
+
+INSERT INTO Courses (CourseName, Credits)
+VALUES ('Mathematics', 3),
+       ('Science', 4),
+       ('History', 3),
+       ('Data Science', 4),
+       ('Philosophy',3);
+
+
+
+
+INSERT INTO ClassesInProgress (StudentID, CourseID) 
+VALUES 
+(1, 1), 
+(2, 2), 
+(3, 3);
+
+
+
+
+SELECT Students.FirstName, Students.LastName, Courses.CourseName
+FROM ClassesInProgress
+INNER JOIN Students ON ClassesInProgress.StudentID = Students.StudentID
+INNER JOIN Courses ON ClassesInProgress.CourseID = Courses.CourseID;
+
+
+SELECT Students.FirstName, Students.LastName, Courses.CourseName
+FROM Students
+LEFT JOIN ClassesInProgress ON Students.StudentID = ClassesInProgress.StudentID
+LEFT JOIN Courses ON ClassesInProgress.CourseID = Courses.CourseID;
+
+
+SELECT ClassesInProgress.Classes_In_Progress_id, Students.LastName, Students.FirstName
+FROM Courses
+RIGHT JOIN ClassesInProgress ON Courses.CourseID = ClassesInProgress.CourseID
+RIGHT JOIN Students ON ClassesInProgress.StudentID = Students.StudentID;
+
+
+SELECT * FROM Students;
+SELECT * FROM Courses;
+SELECT * FROM ClassesInProgress;
+ 
+DROP TABLE IF EXISTS ClassesINProgress;
+DROP TABLE IF EXISTS Students;
+DROP TABLE IF EXISTS Courses;
+
+
