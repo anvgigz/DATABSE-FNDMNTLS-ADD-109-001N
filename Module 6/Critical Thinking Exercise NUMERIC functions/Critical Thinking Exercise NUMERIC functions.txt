@@ -1,0 +1,42 @@
+CREATE TABLE pricing (
+    id INTEGER PRIMARY KEY,
+    original_value REAL,
+    value_as_text TEXT,
+    quantity INTEGER
+);
+
+INSERT INTO pricing (id, original_value, value_as_text, quantity)
+VALUES
+    (1, 23.678, '45.5', 2),
+    (2, 56.789, '18.75', 3),
+    (3, 90.123, '99', 4),
+    (4, 12.5, '11.9', 5);
+
+
+SELECT id, original_value, value_as_text, 
+       TYPEOF(original_value) AS type_of_original,
+       TYPEOF(value_as_text) AS type_of_text
+FROM pricing;
+
+SELECT id, 
+       value_as_text, 
+       CAST(value_as_text AS REAL) * quantity AS multiplied_value
+FROM pricing;
+
+
+
+SELECT id, 
+       ROUND(original_value, 1) AS rounded_value,
+       ROUND(original_value * quantity, 0) AS rounded_product
+FROM pricing;
+
+SELECT id, 
+       original_value + quantity AS addition,
+       original_value - quantity AS subtraction,
+       original_value * quantity AS multiplication,
+       original_value / quantity AS division,
+       original_value % quantity AS modulo
+FROM pricing;
+
+drop table if exists pricing;
+SELECT * FROM pricing;
