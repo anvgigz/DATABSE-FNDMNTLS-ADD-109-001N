@@ -1,0 +1,84 @@
+Table Description
+I will design a table named customers to store customer profiles for a business application. This table will contain information such as customer ID, name, email, phone number, address, account creation date, and status.
+
+The constraints included are:
+
+PRIMARY KEY: Ensures each customer ID is unique and serves as the primary identifier for records.
+
+UNIQUE: Ensures that each email address is unique across the table.
+
+NOT NULL: Ensures that essential fields such as customer ID, name, and email cannot have NULL values.
+
+DEFAULT: Provides a default value for the status field, which will default to 'active' if not specified.
+
+CHECK: Ensures that the phone number follows a specific format.
+
+Explanation
+The PRIMARY KEY constraint ensures that each customer ID is unique and serves as the primary identifier for records.
+
+The UNIQUE constraint ensures that each email address is unique across the table to prevent duplicates.
+
+The NOT NULL constraint on fields like customer ID, name, email, phone number, address, and account creation date ensures that these fields must have values and cannot be left empty.
+
+The DEFAULT constraint on the status field ensures that the default value is 'active' if no value is provided during insertion.
+
+The CHECK constraint on phone number ensures that the value follows a specific format (10-digit numeric).
+
+An INDEX on the email field is created to speed up searches by email.
+
+The ALTER statement adds a new column for the date of birth to the existing table structure.
+
+The SELECT CASE demonstrates categorizing customers based on their account creation date.
+
+The SELECT DISTINCT retrieves a list of unique status values from the table.
+
+-- Create the customers table with necessary constraints
+CREATE TABLE customers (
+    customer_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    phone_number TEXT CHECK(phone_number LIKE '__________' AND phone_number NOT LIKE '%[^0-9]%') NOT NULL,
+    address TEXT NOT NULL,
+    account_creation_date DATE NOT NULL,
+    status TEXT DEFAULT 'active'
+);
+
+-- Create an INDEX on the email field to speed up searches by email
+CREATE INDEX idx_email ON customers(email);
+
+-- Use the ALTER statement to add a new column for date_of_birth
+ALTER TABLE customers ADD COLUMN date_of_birth DATE;
+
+-- Insert data entries into the customers table
+INSERT INTO customers (name, email, phone_number, address, account_creation_date)
+VALUES 
+('John Doe', 'johndoe@example.com', '1234567890', '123 Elm Street, Springfield, IL', '2022-01-15'),
+('Jane Smith', 'janesmith@example.com', '0987654321', '456 Maple Avenue, Lincoln, NE', '2020-05-22'),
+('Sam Wilson', 'samwilson@example.com', '1122334455', '789 Oak Lane, Denver, CO', '2018-11-30'),
+('Alice Johnson', 'alicejohnson@example.com', '6677889900', '321 Pine Road, Austin, TX', '2021-09-18'),
+('Bob Brown', 'bobbrown@example.com', '5566778899', '654 Birch Boulevard, Orlando, FL', '2019-03-10'),
+('Chris Green', 'chrisgreen@example.com', '1122445566', '789 Cedar Street, Chicago, IL', '2025-01-20');
+
+
+-- Demonstrate the use of SELECT CASE
+SELECT customer_id, name,
+CASE 
+    WHEN strftime('%Y', 'now') - strftime('%Y', account_creation_date) < 1 THEN 'New'
+    WHEN strftime('%Y', 'now') - strftime('%Y', account_creation_date) BETWEEN 1 AND 5 THEN 'Established'
+    ELSE 'Loyal'
+END AS customer_status
+FROM customers;
+
+-- Update the status of Alice Johnson to 'inactive'
+UPDATE customers
+SET status = 'inactive'
+WHERE customer_id = 4;
+
+-- Demonstration of SELECT DISTINCT to show unique combinations of status and account creation year
+SELECT DISTINCT status, strftime('%Y', account_creation_date) AS creation_year
+FROM customers;
+
+
+SELECT * FROM customers;
+
+DROP TABLE IF EXISTS customers;

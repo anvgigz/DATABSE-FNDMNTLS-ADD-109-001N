@@ -1,0 +1,23 @@
+
+
+-- 1.find all Zelda games playable on some version of the Game Boy system
+SELECT * FROM Zelda WHERE Systems LIKE 'Game Boy%';
+
+-- 2.update all records having the Timeline "Child Timeline" to read "Child timeline"
+UPDATE Zelda 
+SET Timeline = 'Child timeline' 
+WHERE Timeline = 'Child Timeline';
+
+
+
+-- 3.add a new record
+INSERT INTO Zelda (Timeline, Title, ReleaseYear, Systems)
+    Values
+    ('imaginary timeline', 'The Future of Zelda', 2034, 'Super Duper New Nintendo Switcheroo');
+    
+-- 4.remove the record with GameID 3
+DELETE FROM Zelda Where GameID = 3;
+
+SELECT * FROM Zelda;
+
+SELECT * FROM Zelda WHERE Systems LIKE 'Super Duper New Nintendo Switcheroo'
