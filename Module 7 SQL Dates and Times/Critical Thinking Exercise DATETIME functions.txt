@@ -1,0 +1,25 @@
+CREATE TABLE events (
+    id INTEGER PRIMARY KEY,
+    event_name TEXT,
+    event_date TEXT,
+    event_time TEXT
+);
+
+
+INSERT INTO events (event_name, event_date, event_time) VALUES
+('Meeting', '2025-03-07', '09:00:00'),
+('Lunch', '2025-03-07', '12:30:00'),
+('Conference', '2025-03-08', '10:00:00');
+
+SELECT date('now') AS current_date,
+       time('now') AS current_time,
+       datetime('now') AS current_datetime;
+
+SELECT event_name, strftime('%m-%d-%Y', event_date) AS formatted_date FROM events;
+
+SELECT julianday('now') AS current_julianday;
+
+SELECT unixepoch('now') AS current_unixepoch;
+
+
+DROP TABLE IF EXISTS events;
