@@ -1,6 +1,6 @@
 const connect = require('../../imports/DatabaseConnect'); // Import the reusable connect module
 const useQuery = require('../../imports/DatabaseQuery'); // Import the reusable query module
-
+#comment
 // Database configuration
 const config = {
     host: 'localhost',    // Your database host
@@ -50,3 +50,4 @@ const query = useQuery(connection);
         });
     }
 })();
+
